@@ -24,6 +24,14 @@ int main(void)
 
 	config = iniciar_config();
 
+	if (config == NULL) {
+    // ¡No se pudo crear el config!
+    // Terminemos el programa
+	log_info(logger,"Huubo problemas con el config");
+
+	abort();
+	}
+
 	// Usando el config creado previamente, leemos los valores del config y los 
 	// dejamos en las variables 'ip', 'puerto' y 'valor'
 	valor = config_get_string_value(config,"CLAVE");
