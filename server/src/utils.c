@@ -6,7 +6,8 @@ int iniciar_servidor(void)
 {
 	int socket_servidor;
 
-	struct addrinfo hints, *servinfo, *p;
+	struct addrinfo hints, *servinfo;
+	// *p;
 
 	memset(&hints, 0, sizeof(hints));
 	hints.ai_family = AF_INET;
@@ -16,15 +17,15 @@ int iniciar_servidor(void)
 	getaddrinfo(NULL, PUERTO, &hints, &servinfo);
 
 	// Creamos el socket de escucha del servidor
-	int fd_escucha = socket(servinfo->ai_family, servinfo->ai_socktype, servinfo->ai_protocol);
+	socket_servidor = socket(servinfo->ai_family, servinfo->ai_socktype, servinfo->ai_protocol);
 	
-	setsockopt(fd_escucha, SOL_SOCKET, SO_REUSEPORT, &(int){1}, sizeof(int));
+	setsockopt(socket_servidor, SOL_SOCKET, SO_REUSEPORT, &(int){1}, sizeof(int));
 	
 	// Asociamos el socket a un puerto
-	bind(fd_escucha, servinfo->ai_addr, servinfo->ai_addrlen);
+	bind(socket_servidor, servinfo->ai_addr, servinfo->ai_addrlen);
 
 	// Escuchamos las conexiones entrantes
-	listen(fd_escucha, SOMAXCONN);
+	listen(socket_servidor, SOMAXCONN);
 
 	freeaddrinfo(servinfo);
 	log_trace(logger, "Listo para escuchar a mi cliente");
@@ -35,7 +36,7 @@ int iniciar_servidor(void)
 int esperar_cliente(int socket_servidor)
 {
 	// Aceptamos un nuevo cliente		
-	int fd_conexion = accept(fd_escucha, NULL, NULL);	
+	int socket_cliente = accept(socket_servidor, NULL, NULL);	
 	
 	log_info(logger, "Se conecto un cliente!");
 
