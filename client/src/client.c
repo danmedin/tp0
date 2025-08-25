@@ -27,7 +27,7 @@ int main(void)
 	if (config == NULL) {
     // ¡No se pudo crear el config!
     // Terminemos el programa
-	log_info(logger,"Huubo problemas con el config");
+	log_info(logger,"Hubieron problemas con el config");
 
 	abort();
 	}
@@ -74,7 +74,7 @@ t_log* iniciar_logger(void)
 
 t_config* iniciar_config(void)
 {
-	t_config* nuevo_config = config_create("cliente.config");
+	t_config* nuevo_config = config_create("../cliente.config");
 
 	return nuevo_config;
 }
